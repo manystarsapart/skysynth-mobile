@@ -281,6 +281,9 @@
   .gap-20 {
     gap: calc(var(--spacing) * 20);
   }
+  .overflow-hidden {
+    overflow: hidden;
+  }
   .rounded-4xl {
     border-radius: var(--radius-4xl);
   }

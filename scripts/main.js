@@ -17,7 +17,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     document.addEventListener('touchstart', (e) => {
-        if (e.target === document.documentElement) {
+        if (e.target.closest('.keyboard-key')) { 
+            e.preventDefault();
+        }
+    }, { passive: false });
+
+    document.addEventListener('touchend', (e) => {
+        if (e.target.closest('.keyboard-key')) {
             e.preventDefault();
         }
     }, { passive: false });
@@ -718,8 +724,10 @@ document.addEventListener("DOMContentLoaded", () => {
     for (let mobileKeyID = 0; mobileKeyID < 30; mobileKeyID++) {
         let mobileKey = keyString[mobileKeyID];
         const mobileKeyDiv = document.getElementById(mobileKey);
+        mobileKeyDiv.style.touchAction = 'none';
 
         mobileKeyDiv.addEventListener('touchstart', (e) => {
+            e.preventDefault();
             let midiNote = letterMap[mobileKey] + transposeValue + octaveAdjustment;
             console.log(`mobile key pressed: ${mobileKey}, ${midiToSPN(midiNote)}`);
             currentInstrument.triggerAttack(Tone.Frequency(midiNote, "midi"));
@@ -728,6 +736,7 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         
         mobileKeyDiv.addEventListener('touchend', (e) => {
+            e.preventDefault();
             mobileKeyDiv.style.backgroundColor = "";
             let midiNote = letterMap[mobileKey] + transposeValue + octaveAdjustment
             if (stopAudioWhenReleased == false) return; // IF SAMPLER && NOT E-GUITAR && NOT OTTO-SYNTH
