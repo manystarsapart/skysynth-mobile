@@ -21,7 +21,7 @@
 <!-- <img src="./assets/SAOlake.jpg" id="static-background" class="fixed top-0 left-0 w-full h-full object-cover -z-10 brightness-110" alt="lake background"> -->
 <!-- <img src="./assets/water-mask.jpg" id="water-mask" class="absolute left-0 w-full object-cover -z-10 opacity-20 blur-sm" alt="water line"> -->
 
-<header>
+<!-- <header>
     <div class="flex flex-row">
         <p class="text-5xl font-pressstart2p p-5">SkySynth | mobile</p> 
         <button id="call-menu-button" class="p-3 m-1 rounded-lg border-2 border-white">menu</button>
@@ -30,117 +30,9 @@
     </div>
     
 
-    <nav id="navbar" class="bg-[#80b3ff] z-1000 rounded-l-2xl text-black fixed top-0 bottom-0 right-0 h-full w-[55px] overflow-hidden transition-[width] duration-200 ease-linear transform-gpu scale-100 shadow-[1px_0_15px_rgba(0,0,0,0.07)] opacity-100 hover:w-[400px] group min-h-[60px]">
-        <h1 id="menu-title" class="text-xl p-3 m-1 text-center hidden group-hover:block">menu (esc)</h1>
-        <ul class="text-sm p-1 m-1">
+</header> -->
 
-            <!-- INSTRUMENT SELECTION -->
-            <li class="flex items-center pt-2 min-h-[72px]">
-                <i class="fa-solid fa-gear shrink-0 w-[50px]"></i>
-                <div class="hidden group-hover:block ml-2 whitespace-nowrap">
-                    instrument: <br \>
-                    <select name="instrument selection" id="instrument-selection" class="p-3 m-1 rounded-lg border-2 border-white"></select>
-                </div>
-            </li>
-
-            <!-- EFFECT SELECTION -->
-            <li class="flex items-center pt-2 min-h-[72px]">
-                <i class="fa-solid fa-wand-magic-sparkles shrink-0 w-[50px]"></i>
-                <div class="hidden group-hover:block ml-2 whitespace-nowrap">
-                    effect (experimental): <br \>
-                    <select name="effect selection" id="effect-selection" class="p-3 m-1 rounded-lg border-2 border-white"></select>
-                    <input type="range" id="effect-level-control" min="0" max="100" value="50">            
-                </div>
-            </li>
-
-            <!-- FINAL GAIN SLIDEBAR -->
-            <li class="flex items-center pt-2 min-h-[72px]">
-                <i class="fa-solid fa-volume-high shrink-0 w-[50px]"></i>
-                <div class="hidden group-hover:block ml-2 whitespace-nowrap">
-                    final gain: <span id="volume-value">100% (default)</span><br \>
-                    <input type="range" id="volume-control" min="0" max="100" value="100">
-                </div>
-            </li>
-
-            <!-- KEYBOARD SELECT -->
-            <li class="flex items-center pt-2 min-h-[72px]">
-                <i class="fa-solid fa-keyboard shrink-0 w-[50px]"></i>
-                <div class="hidden group-hover:block ml-2 whitespace-nowrap">
-                   keyboard: <br \> 
-                   <select name="keyboard selection" id="keyboard-selection" class="p-3 m-1 rounded-lg border-2 border-white"></select>
-                </div>
-            </li>
-
-            <!-- CLEAR STATUSDIV -->
-            <li class="flex items-center pt-2 min-h-[72px]">
-                <i class="fa-solid fa-ban shrink-0 w-[50px]"></i>
-                <div class="hidden group-hover:block ml-2 whitespace-nowrap">
-                    misc: <br \>
-                    <button id="clear-status-button" class="p-3 m-1 rounded-lg border-2 border-white hover:bg-[#F08080]">clear status messages</button>
-                    <br \>
-                    <button id="clear-note-history-button" class="p-3 m-1 rounded-lg border-2 border-white hover:bg-[#F08080]">clear note history</button>
-                </div>
-            </li>
-
-            <!-- STOP AUDIO WHEN KEY RELEASED -->
-            <li class="flex items-center pt-2 min-h-[72px]">
-                <i class="fa-solid fa-file-audio shrink-0 w-[50px]"></i>
-                <div class="hidden group-hover:block ml-2 whitespace-nowrap">
-                    stop audio when key released: <br \>
-                    <button id="stop-audio-when-released-button" class="p-3 m-1 w-16 rounded-lg border-2 border-white">false</button> (capslock to toggle)
-                </div>
-            </li>
-
-            <!-- RECORDING FUNCTION -->
-            <li class="flex items-center pt-2 min-h-[72px]">
-                <i class="fa-solid fa-record-vinyl w-[50px]"></i>
-                <div class="hidden group-hover:block ml-2 whitespace-nowrap">
-                    recording: <br \>
-                    <button id="start-record-button" class="p-3 m-1 rounded-lg border-2 border-white hover:bg-[#F08080]">start recording<button>
-                    <button id="stop-record-button" class="p-3 m-1 rounded-lg border-2 border-white hover:bg-[#F08080]">stop recording<button>
-                </div>
-            </li>
-            <li class="flex items-center pt-2 min-h-[72px]">
-                <!-- <i class="fa-solid fa-gear w-[30px] flex-shrink-0"></i> -->
-                <div class="hidden group-hover:block ml-2 whitespace-nowrap">
-                    <button id="play-record-button" class="p-3 m-1 rounded-lg border-2 border-white hover:bg-[#F08080]">play recording<button>
-                    <button id="stop-playback-button" class="p-3 m-1 rounded-lg border-2 border-white hover:bg-[#F08080]">stop playback</button>
-                </div>
-            </li>
-            <li class="flex items-center pt-2 min-h-[72px]">
-                <!-- <i class="fa-solid fa-gear w-[30px] flex-shrink-0"></i> -->
-                <div class="hidden group-hover:block ml-2 whitespace-nowrap">
-                    <button id="save-record-button" class="p-3 m-1 rounded-lg border-2 border-white hover:bg-[#F08080]">save recording<button>
-                    <!-- <button id="clear-record-button" class="p-3 m-1 rounded-lg border-2 border-white hover:bg-[#F08080]">clear recording<button> -->
-                </div>
-            </li>
-
-            <!-- TOGGLE LIGHTS ON / OFF -->
-            <li class="flex items-center pt-2 min-h-[72px]">
-                <i class="fa-solid fa-lightbulb shrink-0 w-[50px]"></i>
-                <div class="hidden group-hover:block ml-2 whitespace-nowrap">
-                    light switch:
-                    <button id="light-switch" class="p-3 m-1 rounded-lg border-2 border-white bg-[#588157]">on / off<button> (spacebar)
-                </div>
-            </li>
-                
-
-
-            <div id="acknowledgements" class="text-xs fixed bottom-0 right-0 p-10 text-right hidden group-hover:block ml-2 whitespace-nowrap">
-
-                made by @manystarsapart <br>
-                for any feedback, please contact through discord <br>
-                last updated: 2 mar 2025<br>
-                current version: 0.12.0<br>
-                <a href="https://github.com/manystarsapart/skysynth/blob/main/CHANGELOG.md" target="_blank" class="text-emerald-800"><u>view changelog</u></a> 
-                | <a href="https://www.old.skysynth.space" target="_blank" class="text-emerald-800"><u>old version (0.9.1)</u></a>
-    
-            </div>
-        </ul>
-    </nav>
-</header>
-
-<main id="main-content" class="-z-10">
+<main id="main-content" class="-z-10 touch-none">
 
 
     <div class="w-full gap-20 flex flex-row items-center justify-center"> <!-- note visual guides-->

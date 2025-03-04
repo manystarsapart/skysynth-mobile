@@ -19,113 +19,113 @@ document.addEventListener("DOMContentLoaded", () => {
     // ===========================================
     // MENU TOGGLE
 
-    const navbar = document.getElementById("navbar");
-    const menuTitle = document.getElementById("menu-title");
-    const navContent = navbar.querySelectorAll("li > div");
-    const acknowledgements = document.getElementById("acknowledgements");
+    // const navbar = document.getElementById("navbar");
+    // const menuTitle = document.getElementById("menu-title");
+    // const navContent = navbar.querySelectorAll("li > div");
+    // const acknowledgements = document.getElementById("acknowledgements");
 
-    function toggleMenu() {
-        navbar.classList.toggle("w-[400px]");
-        navbar.classList.toggle("hover:w-[400px]");
-        menuTitle.classList.toggle("hidden");
-        menuTitle.classList.toggle("group-hover:block");
-        navContent.forEach(div => {
-            div.classList.toggle("hidden");
-            div.classList.toggle("group-hover:block");
-        });
-        acknowledgements.classList.toggle("hidden");
-        acknowledgements.classList.toggle("group-hover:block");
-    }
+    // function toggleMenu() {
+    //     navbar.classList.toggle("w-[400px]");
+    //     navbar.classList.toggle("hover:w-[400px]");
+    //     menuTitle.classList.toggle("hidden");
+    //     menuTitle.classList.toggle("group-hover:block");
+    //     navContent.forEach(div => {
+    //         div.classList.toggle("hidden");
+    //         div.classList.toggle("group-hover:block");
+    //     });
+    //     acknowledgements.classList.toggle("hidden");
+    //     acknowledgements.classList.toggle("group-hover:block");
+    // }
 
     // ===========================================
     // RECORDING FUNCTIONALITY
 
-    let mediaRecorder;
-    let audioChunks = [];
-    let hasRecording = false;
-    let isRecording = false;
-    let audio;
-    let audioUrl;
+    // let mediaRecorder;
+    // let audioChunks = [];
+    // let hasRecording = false;
+    // let isRecording = false;
+    // let audio;
+    // let audioUrl;
     
-    const startRecordButton = document.getElementById('start-record-button');
-    const stopRecordButton = document.getElementById('stop-record-button');
-    const playRecordButton = document.getElementById('play-record-button');
-    const saveRecordButton = document.getElementById('save-record-button');
-    const stopPlaybackButton = document.getElementById("stop-playback-button");
-    // const clearRecordButton = document.getElementById('clear-record-button');
+    // const startRecordButton = document.getElementById('start-record-button');
+    // const stopRecordButton = document.getElementById('stop-record-button');
+    // const playRecordButton = document.getElementById('play-record-button');
+    // const saveRecordButton = document.getElementById('save-record-button');
+    // const stopPlaybackButton = document.getElementById("stop-playback-button");
+    // // const clearRecordButton = document.getElementById('clear-record-button');
     
-    startRecordButton.addEventListener('click', startRecording);
-    stopRecordButton.addEventListener('click', stopRecording);
-    playRecordButton.addEventListener('click', playRecording);
-    saveRecordButton.addEventListener('click', saveRecording);
-    stopPlaybackButton.addEventListener('click', stopPlayback)
-    // clearRecordButton.addEventListener('click', clearRecording);
+    // startRecordButton.addEventListener('click', startRecording);
+    // stopRecordButton.addEventListener('click', stopRecording);
+    // playRecordButton.addEventListener('click', playRecording);
+    // saveRecordButton.addEventListener('click', saveRecording);
+    // stopPlaybackButton.addEventListener('click', stopPlayback)
+    // // clearRecordButton.addEventListener('click', clearRecording);
     
-    function startRecording() {
-        if (isRecording) {
-            alert("Recording already in progress!");
-            return;
-        }
-        hasRecording = false;
-        isRecording = true;
-        startRecordButton.style.backgroundColor = "#F08080";
-        audioChunks = [];
-        const audioStream = Tone.context.createMediaStreamDestination();
-        volumeNode.connect(audioStream);
+    // function startRecording() {
+    //     if (isRecording) {
+    //         alert("Recording already in progress!");
+    //         return;
+    //     }
+    //     hasRecording = false;
+    //     isRecording = true;
+    //     startRecordButton.style.backgroundColor = "#F08080";
+    //     audioChunks = [];
+    //     const audioStream = Tone.context.createMediaStreamDestination();
+    //     volumeNode.connect(audioStream);
         
-        mediaRecorder = new MediaRecorder(audioStream.stream);
-        mediaRecorder.ondataavailable = (e) => {
-            audioChunks.push(e.data);
-        };
-        mediaRecorder.onstop = () => {
-            const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-            audioUrl = URL.createObjectURL(audioBlob);
-            audio = new Audio(audioUrl);
-            hasRecording = true;
-            isRecording = false;
-            alert("Recording stopped!");
-            startRecordButton.style.backgroundColor = "";
-            // TODO: something is wrong here. i forgot what i was going to fix
-            // i will come back to fixing this later
-        };
-        mediaRecorder.start();
-        alert("Recording started...");
-    }
+    //     mediaRecorder = new MediaRecorder(audioStream.stream);
+    //     mediaRecorder.ondataavailable = (e) => {
+    //         audioChunks.push(e.data);
+    //     };
+    //     mediaRecorder.onstop = () => {
+    //         const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+    //         audioUrl = URL.createObjectURL(audioBlob);
+    //         audio = new Audio(audioUrl);
+    //         hasRecording = true;
+    //         isRecording = false;
+    //         alert("Recording stopped!");
+    //         startRecordButton.style.backgroundColor = "";
+    //         // TODO: something is wrong here. i forgot what i was going to fix
+    //         // i will come back to fixing this later
+    //     };
+    //     mediaRecorder.start();
+    //     alert("Recording started...");
+    // }
     
-    function stopRecording() {
-        mediaRecorder.stop();
-    }
+    // function stopRecording() {
+    //     mediaRecorder.stop();
+    // }
     
-    function playRecording() {
-        if (hasRecording && audio) {
-            audio.onended = () => {
-                alert("Recording playback finished.");
-            }
-            audio.play();
-            alert("Playing recording...");
-        } else if (isRecording) {
-            alert("There is a recording in progress! Cannot play!");
-        } else {
-            alert("No stored recording.");
-        }
-    }
+    // function playRecording() {
+    //     if (hasRecording && audio) {
+    //         audio.onended = () => {
+    //             alert("Recording playback finished.");
+    //         }
+    //         audio.play();
+    //         alert("Playing recording...");
+    //     } else if (isRecording) {
+    //         alert("There is a recording in progress! Cannot play!");
+    //     } else {
+    //         alert("No stored recording.");
+    //     }
+    // }
 
-    // TODO: ADD STOP PLAYBACK BUTTON
-    function stopPlayback() {
-        if (audio) {
-            audio.pause();
-            audio.currentTime = 0;
-            alert("Playback stopped.");
-        }
-    }
+    // // TODO: ADD STOP PLAYBACK BUTTON
+    // function stopPlayback() {
+    //     if (audio) {
+    //         audio.pause();
+    //         audio.currentTime = 0;
+    //         alert("Playback stopped.");
+    //     }
+    // }
 
-    function saveRecording() {
-        alert("Saving recording...");
-        const link = document.createElement('a');
-        link.href = audioUrl;
-        link.download = 'recording.wav';
-        link.click();
-    }
+    // function saveRecording() {
+    //     alert("Saving recording...");
+    //     const link = document.createElement('a');
+    //     link.href = audioUrl;
+    //     link.download = 'recording.wav';
+    //     link.click();
+    // }
 
     // function clearRecording() {
     //     // THIS IS BENCHED UNTIL FURTHER ACTION BECAUSE THE CLEAR BUTTON ALSO CLEARS EVERY AUDIO THING
@@ -305,23 +305,6 @@ document.addEventListener("DOMContentLoaded", () => {
         notesDivL.innerHTML = mapNumbersToNotes(transposeMap[pitchMap[key]], 0);
         notesDivR.innerHTML = mapNumbersToNotes(transposeMap[pitchMap[key]], 1);
     }
-
-    // ===========================================
-    // VOLUME CONTROL
-
-    const volumeNode = new Tone.Volume().toDestination();
-    let volume = parseInt(localStorage.getItem("savedVolume")) || 0; 
-    const volumeControl = document.getElementById("volume-control");
-    const volumeValueBox = document.getElementById("volume-value");
-    volumeValueBox.textContent = `${volume}%`;
-    volumeControl.addEventListener("input", (e) => {
-        volume = e.target.value;
-        localStorage.setItem("savedVolume", volume.toString()); // stored in localStorage
-        volumeValueBox.textContent = `${volume}%`; // display
-        volumeNode.volume.value = Tone.gainToDb(volume/100); // % to db
-        // console.log(`volume in db: ${volumeNode.volume.value}`); // debug
-    }); 
-
 
     // ===========================================
     // CHOOSING INSTRUMENTS & EFFECTS
@@ -504,126 +487,128 @@ document.addEventListener("DOMContentLoaded", () => {
         "Otto - Synth",
     ]
 
-    // dynamically update select elements
-    for (var i = 0; i < instrumentNames.length; i++) {
-        instrumentSelection.appendChild(
-            Object.assign(
-                document.createElement("option"),
-                { value: i, innerHTML: instrumentNames[i] }
-            )
-        );
-    }
+    // // dynamically update select elements
+    // for (var i = 0; i < instrumentNames.length; i++) {
+    //     instrumentSelection.appendChild(
+    //         Object.assign(
+    //             document.createElement("option"),
+    //             { value: i, innerHTML: instrumentNames[i] }
+    //         )
+    //     );
+    // }
 
-    for (var i = 0; i < effectNodes.length; i++) {
-        effectSelection.appendChild(
-            Object.assign(
-                document.createElement("option"),
-                { value: i, innerHTML: effectNodes[i] != null ? effectNodes[i].name : "None" }
-            )
-        )
-    }
+    // for (var i = 0; i < effectNodes.length; i++) {
+    //     effectSelection.appendChild(
+    //         Object.assign(
+    //             document.createElement("option"),
+    //             { value: i, innerHTML: effectNodes[i] != null ? effectNodes[i].name : "None" }
+    //         )
+    //     )
+    // }
   
     // effectNodes[4].dampening = 5000; // or 1000 if you want a rough sound
 
     // default: synth & no effect
     let currentInstrument = instruments[0];
+    const volumeNode = new Tone.Volume().toDestination();
+    currentInstrument.connect(volumeNode);
     let currentEffectNode = effectNodes[0];
   
-    // changing EFFECTS
-    effectSelection.addEventListener("input", (e) => {
-        const selectedID = parseInt(e.target.value); 
-        getEffectLevelInput(effectNodes[selectedID]); 
-        // ^^read from slider BEFORE setting new effect. this ensures we are setting things for the correct node
+    // // changing EFFECTS
+    // effectSelection.addEventListener("input", (e) => {
+    //     const selectedID = parseInt(e.target.value); 
+    //     getEffectLevelInput(effectNodes[selectedID]); 
+    //     // ^^read from slider BEFORE setting new effect. this ensures we are setting things for the correct node
 
-        let newEffectNode = effectNodes[selectedID]; // set new effect 
+    //     let newEffectNode = effectNodes[selectedID]; // set new effect 
 
-        // rewiring to include new effect node
-        currentInstrument.disconnect();
-        if (currentEffectNode) { // if existing effect is connected, unwire
-            currentEffectNode.disconnect(volumeNode);
-        }
-        currentEffectNode = newEffectNode; 
-        if (currentEffectNode) { // rewire to new effect
-            currentInstrument.connect(currentEffectNode); // rewire only for
-            currentEffectNode.connect(volumeNode);
-        } else {
-            currentInstrument.connect(volumeNode);
-        }
-    });
+    //     // rewiring to include new effect node
+    //     currentInstrument.disconnect();
+    //     if (currentEffectNode) { // if existing effect is connected, unwire
+    //         currentEffectNode.disconnect(volumeNode);
+    //     }
+    //     currentEffectNode = newEffectNode; 
+    //     if (currentEffectNode) { // rewire to new effect
+    //         currentInstrument.connect(currentEffectNode); // rewire only for
+    //         currentEffectNode.connect(volumeNode);
+    //     } else {
+    //         currentInstrument.connect(volumeNode);
+    //     }
+    // });
 
 
-    // update again to realise new connection
-    effectSelection.dispatchEvent(new Event('input'));
+    // // update again to realise new connection
+    // effectSelection.dispatchEvent(new Event('input'));
 
-    // changing INSTRUMENTS
-    instrumentSelection.addEventListener("input", (e) => {
-        // the actual changing
-        currentInstrument = instruments[e.target.value]; 
-        // rewiring
-        currentInstrument.disconnect();
-        if (currentEffectNode) currentInstrument.connect(currentEffectNode);
-        else currentInstrument.connect(volumeNode);
-        if (currentInstrument == "Sampler" && e.target.value != 1 && e.target.value != 12) {
-            // IF SAMPLER && NOT E-GUITAR && NOT OTTO-SYNTH
-            stopAudioWhenReleased = false;
-            stopAudioWhenReleasedButton.style.backgroundColor = "#F08080";
-            stopAudioWhenReleasedButton.textContent = "false"
-        } 
-        else {
-            stopAudioWhenReleased = true;
-            stopAudioWhenReleasedButton.style.backgroundColor = "#588157";
-            stopAudioWhenReleasedButton.textContent = "true"
-        } 
-    });
+    // // changing INSTRUMENTS
+    // instrumentSelection.addEventListener("input", (e) => {
+    //     // the actual changing
+    //     currentInstrument = instruments[e.target.value]; 
+    //     // rewiring
+    //     currentInstrument.disconnect();
+    //     if (currentEffectNode) currentInstrument.connect(currentEffectNode);
+    //     else currentInstrument.connect(volumeNode);
+    //     if (currentInstrument == "Sampler" && e.target.value != 1 && e.target.value != 12) {
+    //         // IF SAMPLER && NOT E-GUITAR && NOT OTTO-SYNTH
+    //         stopAudioWhenReleased = false;
+    //         stopAudioWhenReleasedButton.style.backgroundColor = "#F08080";
+    //         stopAudioWhenReleasedButton.textContent = "false"
+    //     } 
+    //     else {
+    //         stopAudioWhenReleased = true;
+    //         stopAudioWhenReleasedButton.style.backgroundColor = "#588157";
+    //         stopAudioWhenReleasedButton.textContent = "true"
+    //     } 
+    // });
 
-    stopAudioWhenReleasedButton.addEventListener("click", (e) => {
-        if (stopAudioWhenReleased == true) {
-            stopAudioWhenReleased = false;
-            stopAudioWhenReleasedButton.style.backgroundColor = "#F08080";
-            stopAudioWhenReleasedButton.textContent = "false"
-        } else {
-            stopAudioWhenReleased = true;
-            stopAudioWhenReleasedButton.style.backgroundColor = "#588157";
-            stopAudioWhenReleasedButton.textContent = "true"
-        }
-    })
+    // stopAudioWhenReleasedButton.addEventListener("click", (e) => {
+    //     if (stopAudioWhenReleased == true) {
+    //         stopAudioWhenReleased = false;
+    //         stopAudioWhenReleasedButton.style.backgroundColor = "#F08080";
+    //         stopAudioWhenReleasedButton.textContent = "false"
+    //     } else {
+    //         stopAudioWhenReleased = true;
+    //         stopAudioWhenReleasedButton.style.backgroundColor = "#588157";
+    //         stopAudioWhenReleasedButton.textContent = "true"
+    //     }
+    // })
 
-    effectLevelControl.addEventListener("input", (e) => {effectSelection.dispatchEvent(new Event('input'))});
+    // effectLevelControl.addEventListener("input", (e) => {effectSelection.dispatchEvent(new Event('input'))});
 
     // update
-    instrumentSelection.dispatchEvent(new Event('input'));
+    // instrumentSelection.dispatchEvent(new Event('input'));
 
-    // read from slider
-    function getEffectLevelInput(node) {
-        if (node == null) {
-            console.log("No effect.");
-            effectLevelControl.style.display = "none";
-            return;
-        }
+    // // read from slider
+    // function getEffectLevelInput(node) {
+    //     if (node == null) {
+    //         console.log("No effect.");
+    //         effectLevelControl.style.display = "none";
+    //         return;
+    //     }
 
-        effectLevel = parseInt(effectLevelControl.value);
+    //     effectLevel = parseInt(effectLevelControl.value);
 
-        effectLevelControl.style.display = "inline-block";
-        console.log(node.name);
-        switch (node.name) {
-            case "Distortion":
-                effectNodes[1].distortion = effectLevel / 100;
-                // sounds better around mid range
-                break;
-            case "AutoWah":
-                effectNodes[2].sensitivity = effectLevel / 100 * 60 - 60;
-                // effect more apparent at higher values
-                break;
-            case "BitCrusher":
-                effectNodes[3].bits = effectLevel / 100 * 15 + 1;
-                // sounds better at higher values
-                break;
-            case "Freeverb":
-                effectNodes[4].roomSize = effectLevel / 100;
-                // sounds better for me at lower values
-                break;
-        }
-    }
+    //     effectLevelControl.style.display = "inline-block";
+    //     console.log(node.name);
+    //     switch (node.name) {
+    //         case "Distortion":
+    //             effectNodes[1].distortion = effectLevel / 100;
+    //             // sounds better around mid range
+    //             break;
+    //         case "AutoWah":
+    //             effectNodes[2].sensitivity = effectLevel / 100 * 60 - 60;
+    //             // effect more apparent at higher values
+    //             break;
+    //         case "BitCrusher":
+    //             effectNodes[3].bits = effectLevel / 100 * 15 + 1;
+    //             // sounds better at higher values
+    //             break;
+    //         case "Freeverb":
+    //             effectNodes[4].roomSize = effectLevel / 100;
+    //             // sounds better for me at lower values
+    //             break;
+    //     }
+    // }
 
     // ===========================================
     // HANDLING KEYPRESSES

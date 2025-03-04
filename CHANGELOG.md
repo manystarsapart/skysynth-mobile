@@ -41,7 +41,8 @@ FUTURE PLANS
 ## [M-0.0.1] - 2025-03-04
 ### Fixed
 - reduce size of notes
-- user scalable is now false. hopefully it makes the experience better
+- user scalable: yes --> no
+- touch action: auto --> none
 
 
 ## [M-0.0.0] - 2025-03-04
