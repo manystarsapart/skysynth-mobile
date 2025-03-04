@@ -39,6 +39,9 @@ FUTURE PLANS
 
 
 ## [M-0.0.1] - 2025-03-04
+### Added
+- sw.js & manifest.json for native app behaviour after download. EXPERIMENTAL
+
 ### Fixed
 - reduce size of notes
 - user scalable: yes --> no

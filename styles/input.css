@@ -4,3 +4,10 @@
     font-family: "PressStart2P";
     src: url("assets/PressStart2P-Regular.ttf");
 }
+
+@media all and (display-mode: standalone) {
+    body {
+      overscroll-behavior: none;
+      height: 100vh;
+    }
+  }

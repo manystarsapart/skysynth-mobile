@@ -1,5 +1,33 @@
+// registering service worker
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+    navigator.serviceWorker.register('../sw.js')
+        .then(registration => {
+        console.log('ServiceWorker registration successful');
+        })
+        .catch(err => {
+        console.log('ServiceWorker registration failed: ', err);
+        });
+    });
+}
+
 
 document.addEventListener("DOMContentLoaded", () => {
+
+
+
+    document.addEventListener('touchstart', (e) => {
+        if (e.target === document.documentElement) {
+            e.preventDefault();
+        }
+    }, { passive: false });
+  
+    window.addEventListener('resize', () => {
+        if (window.matchMedia('(display-mode: standalone)').matches) {
+            document.documentElement.style.height = window.innerHeight + 'px';
+        }
+    });
+
 
     // getting from DOM & assigning variables
     let messages = [];
