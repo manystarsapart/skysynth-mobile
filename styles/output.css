@@ -236,6 +236,9 @@
   .w-full {
     width: 100%;
   }
+  .min-w-20 {
+    min-width: calc(var(--spacing) * 20);
+  }
   .touch-none {
     touch-action: none;
   }
