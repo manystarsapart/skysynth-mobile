@@ -1,18 +1,53 @@
-// registering service worker
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-    navigator.serviceWorker.register('../sw.js')
-        .then(registration => {
-        console.log('ServiceWorker registration successful');
-        })
-        .catch(err => {
-        console.log('ServiceWorker registration failed: ', err);
-        });
-    });
-}
-
-
 document.addEventListener("DOMContentLoaded", () => {
+
+    let loadSteps = 0;
+    const loadingScreen = document.getElementById('loading-screen');
+    const loadingProgress = document.getElementById('loading-progress');
+    const loadingStatus = document.getElementById('loading-status');
+
+    if ('serviceWorker' in navigator) {
+        loadSteps++;
+        navigator.serviceWorker.register('../sw.js')
+            .then(registration => {
+                updateProgress();
+                console.log('ServiceWorker registered');
+            })
+            .catch(err => {
+                console.log('ServiceWorker failed:', err);
+                loadingStatus.textContent = "Error: Offline features unavailable";
+            });
+    }
+
+    loadSteps++;
+    Tone.start().then(() => {
+        updateProgress();
+        loadingStatus.textContent = "Loading samples...";
+    });
+
+    function updateProgress() {
+        const progress = (++loadedSteps / loadSteps) * 100;
+        loadingProgress.style.width = `${Math.min(progress, 100)}%`;
+        
+        if (loadedSteps >= loadSteps) {
+            Promise.all(instruments.map(instrument => {
+                if (instrument instanceof Tone.Sampler) {
+                    return new Promise(resolve => {
+                        instrument.onload = resolve;
+                    });
+                }
+                return Promise.resolve();
+            })).then(() => {
+                loadingStatus.textContent = "Ready!";
+                setTimeout(() => {
+                    loadingScreen.classList.add('loading-hidden');
+                    setTimeout(() => {
+                        loadingScreen.style.display = 'none';
+                    }, 300);
+                }, 500);
+            });
+        }
+    }
+
 
 
 
@@ -181,8 +216,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // ===========================================
     // MAPS FOR KEY --- MIDINOTE
-
-    alert("Initialised!");
     
     // for double music pad
     const dbLetterMap = {
