@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
         Tone.start(),
         new Promise(resolve => setTimeout(resolve, 2000)) // audio: max 2s
     ]).then(() => {
-        loadingStatus.textContent = "Ready!";
+        loadingStatus.textContent = "ready!";
         finishLoading();
     });
     

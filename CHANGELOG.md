@@ -45,6 +45,7 @@ FUTURE PLANS
 
 ### Changed
 - move sw registration into domcontentloaded
+- spacing for notes
 
 
 ## [M-0.0.1] - 2025-03-04
