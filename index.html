@@ -65,12 +65,26 @@
     <div id="loading-status" class="mt-4 text-lg">initialising audio engine...</div>
 </div>
 
+<button id="menu-button" class="p-2 border-2 border-black bg-white/80 rounded-lg">menu</button>
+<div id="modal-overlay" class="fixed top-0 left-0 w-full h-full bg-gray-800/50 hidden justify-center items-center z-50">
+    <div class="bg-white rounded-lg shadow-lg max-w-lg w-full p-4 relative z-51">
+        
+        <button id="close-modal" class="absolute top-2 right-2 text-3xl">×</button>
+            
+        <div id="modal-content" class="overflow-y-auto">
+            <h1 class="text-2xl">menu</h1>
+            <div>transpose: 
+                <select name="transpose selection" id="transpose-selection"></select>
+            </div>
 
+        </div>
 
+    </div>
+</div>
 
 <main id="main-content" class="-z-10 touch-none">
 
-
+    
     <div class="w-full h-screen flex flex-row justify-center items-center"> <!-- note visual guides-->
         <div id="notes-div-left" class="grid grid-cols-5 gap-2 text-3xl pr-3">
             <div id="q" class="keyboard-key flex flex-col items-center justify-center rounded-3xl border-3 text-center h-20 w-20 min-w-20 bg-white/80">
@@ -236,6 +250,8 @@
     </div>
 </main>
 
+<div id="placeholder-div-for-classes" class="opacity-0">
+</div>
     
 </body>
 </html>

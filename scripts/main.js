@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
         clearInterval(progressInterval);
         loadingProgress.style.width = '100%';
         setTimeout(() => {
-            loadingScreen.classList.add('loading-hidden');
+            loadingScreen.classList.add('opacity-0');
             setTimeout(() => {
                 loadingScreen.style.display = 'none';
             }, 300);
@@ -71,7 +71,6 @@ document.addEventListener("DOMContentLoaded", () => {
     // getting from DOM & assigning variables
     let messages = [];
     let noteHistory = [];
-    let transposeValue = 0;
     let stopAudioWhenReleased = 0;
     const statusDiv = document.getElementById("status-div");
     const notesDiv = document.getElementById("notes-div");
@@ -213,6 +212,80 @@ document.addEventListener("DOMContentLoaded", () => {
     // }
 
     // ===========================================
+    // MENU MODAL
+
+    const menuButton = document.getElementById("menu-button");
+    const modalOverlay = document.getElementById("modal-overlay");
+    const closeModalButton = document.getElementById("close-modal");
+    const mainContent = document.getElementById("main-content");
+
+    menuButton.addEventListener('touchstart', () => toggleModal(true));
+    closeModalButton.addEventListener('touchend', () => toggleModal(false));
+
+    function toggleModal(show) {
+        if (show) {
+            modalOverlay.classList.remove("hidden");
+            mainContent.classList.add("opacity-50");
+        } else {
+            modalOverlay.classList.add("hidden");
+            mainContent.classList.remove("opacity-50");
+        }
+    }
+    
+    // ===========================================
+    // TRANSPOSE
+
+    const transposeList = [
+        "C", 
+        "C#",
+        "D", 
+        "D#",
+        "E", 
+        "F", 
+        "F#",
+        "G", 
+        "G#",
+        "A", 
+        "Bb",
+        "B"
+    ];
+
+    const transposeValueList = {
+        'C': 0,
+        'C#': 1,
+        'D': 2,
+        'D#': 3,
+        'E': 4,
+        'F': 5,
+        'F#': 6,
+        'G': 7,
+        'G#': 8,
+        'A': 9,
+        'Bb': 10,
+        'B': 11
+    }
+
+    const transposeSelection = document.getElementById("transpose-selection");
+    let transposeValue = 0;
+    let transposeNote = "";
+
+    for (const note of transposeList) {
+        transposeSelection.appendChild(
+            Object.assign(
+                document.createElement("option"),
+                { value: note, textContent: note }
+            )
+        );
+    }
+
+    transposeSelection.addEventListener('input', (e) => {
+        transposeValue = transposeValueList[e.target.value];
+        transposeNote = transposeList[transposeValue];
+        updateVisualGuide();
+    });
+
+
+    // ===========================================
     // MAPS FOR KEY --- MIDINOTE
     
     // for double music pad
@@ -226,34 +299,10 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     // for keys pressed to initiate transposing
-    const pitchMap = {
-        '`': 0, '1': 1, '2': 2, '3': 3, '4': 4, '5': 5, 
-        '6': 6, '7': 7, '8': 8, '9': 9, '0':10, '-': 11, 
-        '=': 12
-    };
 
     // TODO: MAKE THIS INTO A DROPDOWN TO SELECT IN MENU INSTEAD
 
-    // shows exact scale of tranposed key
-    // JUST FOR VISUAL GUIDE
-    // note that this is separate because pitchMap values are the ones used in the midiNotes
-    const transposeMap = {
-        '0': "C", 
-        '1': "C#",
-        '2': "D", 
-        '3': "D#",
-        '4': "E", 
-        '5': "F", 
-        '6': "F#",
-        '7': "G", 
-        '8': "G#",
-        '9': "A", 
-        '10': "Bb",
-        '11': "B", 
-        '12': "C"
-    };
-
-
+    
     // ===========================================
     // OCTAVE CHANGE
 
@@ -271,7 +320,7 @@ document.addEventListener("DOMContentLoaded", () => {
         octaveAdjustment += 12;
         octaveValueBox.innerHTML = octave;
         alert(`Octave shift updated to: ${octave}`);
-        updateVisualGuide(lastPressedTransposeKey);
+        updateVisualGuide();
     }
 
     function octaveDown() {
@@ -283,7 +332,7 @@ document.addEventListener("DOMContentLoaded", () => {
         octaveAdjustment -= 12;
         octaveValueBox.innerHTML = octave; 
         alert(`Octave shift updated to: ${octave}`);
-        updateVisualGuide(lastPressedTransposeKey); 
+        updateVisualGuide(); 
     }
 
     // ===========================================
@@ -344,18 +393,16 @@ document.addEventListener("DOMContentLoaded", () => {
             const note = keyNotes[noteIndex];
             const currentOctave = octaveBase + (countC - 1);
             if (leftright == 0) {
-                return `<div id="${preserveKeyIDLeft[keyIDcount-1]}" class="flex flex-col items-center justify-center p-2 rounded-4xl border-3 text-center h-30 w-30 relative bg-white/80">
+                return `<div id="${preserveKeyIDLeft[keyIDcount-1]}" class="keyboard-key flex flex-col items-center justify-center rounded-3xl border-3 text-center h-20 w-20 min-w-20 bg-white/80">
                     <div>
-                    ${note}<sub class="text-lg">${currentOctave}</sub>
+                    ${note}<sub class="text-sm">${currentOctave}</sub>
                     </div>
-                    <span class="text-2xl">${preserveKeyIDLeft[keyIDcount-1].toUpperCase()}</span>
                 </div>`;
             } else {
-                return `<div id="${preserveKeyIDRight[keyIDcount-1]}" class="flex flex-col items-center justify-center p-2 rounded-4xl border-3 text-center h-30 w-30 relative bg-white/80">
+                return `<div id="${preserveKeyIDRight[keyIDcount-1]}" class="keyboard-key flex flex-col items-center justify-center rounded-3xl border-3 text-center h-20 w-20 min-w-20 bg-white/80">
                 <div>
-                    ${note}<sub class="text-lg">${currentOctave}</sub>
+                    ${note}<sub class="text-sm">${currentOctave}</sub>
                 </div>
-                <span class="text-2xl">${preserveKeyIDRight[keyIDcount-1].toUpperCase()}</span>
                 </div>`;
             }
         });
@@ -366,9 +413,10 @@ document.addEventListener("DOMContentLoaded", () => {
     // ^^^ THIS FUNCTION WAS IMPROVED BY DEEPSEEK R1 TO HELP DISPLAY EACH OCTAVES NUMBER CORRECTLY
     // ALL HAIL OUR AI OVERLORDS
 
-    function updateVisualGuide(key) {
-        notesDivL.innerHTML = mapNumbersToNotes(transposeMap[pitchMap[key]], 0);
-        notesDivR.innerHTML = mapNumbersToNotes(transposeMap[pitchMap[key]], 1);
+    function updateVisualGuide() {
+        notesDivL.innerHTML = mapNumbersToNotes(transposeNote, 0);
+        notesDivR.innerHTML = mapNumbersToNotes(transposeNote, 1);
+        refreshKeypressHandlers();
     }
 
     // ===========================================
@@ -702,7 +750,7 @@ document.addEventListener("DOMContentLoaded", () => {
             transposeValueBox.innerHTML = pitchMap[key]; // returns semitone count
             scaleValueBox.innerHTML = transposeMap[pitchMap[key]]; // returns scale ("C", "D", etc)
             scaleValueBox2.innerHTML = transposeMap[pitchMap[key]]; // returns the same scale for better visualisation
-            updateVisualGuide(key);
+            updateVisualGuide();
             console.log(`transpose value updated to: ${pitchMap[key]}`);
         } 
         
@@ -751,34 +799,36 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const keyString = "qwertasdfgzxcvbyuiophjkl;nm,./";
     
-
-    for (let mobileKeyID = 0; mobileKeyID < 30; mobileKeyID++) {
-        let mobileKey = keyString[mobileKeyID];
-        const mobileKeyDiv = document.getElementById(mobileKey);
-        mobileKeyDiv.style.touchAction = 'none';
-
-        mobileKeyDiv.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            let midiNote = letterMap[mobileKey] + transposeValue + octaveAdjustment;
-            console.log(`mobile key pressed: ${mobileKey}, ${midiToSPN(midiNote)}`);
-            currentInstrument.triggerAttack(Tone.Frequency(midiNote, "midi"));
-            mobileKeyDiv.style.backgroundColor = "#588157"; // lights up key to green
-
-        })
-        
-        mobileKeyDiv.addEventListener('touchend', (e) => {
-            e.preventDefault();
-            mobileKeyDiv.style.backgroundColor = "";
-            let midiNote = letterMap[mobileKey] + transposeValue + octaveAdjustment
-            if (stopAudioWhenReleased == false) return; // IF SAMPLER && NOT E-GUITAR && NOT OTTO-SYNTH
-            else;
-            currentInstrument.triggerRelease(Tone.Frequency(midiNote, "midi"));
-        })
+    function refreshKeypressHandlers() {
+        for (let mobileKeyID = 0; mobileKeyID < 30; mobileKeyID++) {
+            let mobileKey = keyString[mobileKeyID];
+            const mobileKeyDiv = document.getElementById(mobileKey);
+            mobileKeyDiv.style.touchAction = 'none';
+    
+            mobileKeyDiv.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                let midiNote = letterMap[mobileKey] + transposeValue + octaveAdjustment;
+                console.log(`mobile key pressed: ${mobileKey}, ${midiToSPN(midiNote)}`);
+                currentInstrument.triggerAttack(Tone.Frequency(midiNote, "midi"));
+                mobileKeyDiv.style.backgroundColor = "#588157"; // lights up key to green
+    
+            })
+            
+            mobileKeyDiv.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                mobileKeyDiv.style.backgroundColor = "";
+                let midiNote = letterMap[mobileKey] + transposeValue + octaveAdjustment
+                if (stopAudioWhenReleased == false) return; // IF SAMPLER && NOT E-GUITAR && NOT OTTO-SYNTH
+                else;
+                currentInstrument.triggerRelease(Tone.Frequency(midiNote, "midi"));
+            })
+        }
     }
-
+    
+    refreshKeypressHandlers();
 
     
-    // updateVisualGuide(key); key: `,1,2,3,4,5,6,7,8,9,0,-,=
+    // updateVisualGuide(); key: `,1,2,3,4,5,6,7,8,9,0,-,=
     // TODO: MAKE THIS INTO A DROPDOWN
 
 
