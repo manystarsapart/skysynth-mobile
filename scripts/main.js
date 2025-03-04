@@ -1,52 +1,50 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    let loadSteps = 0;
+    let loadingHidden = false;
     const loadingScreen = document.getElementById('loading-screen');
     const loadingProgress = document.getElementById('loading-progress');
     const loadingStatus = document.getElementById('loading-status');
-
+    
+    let progress = 0;
+    const progressInterval = setInterval(() => {
+        if (progress < 90) { // stuck at 90%
+            progress += 2;
+            loadingProgress.style.width = `${progress}%`;
+        }
+    }, 100);
+    
+    // register for service worker 
     if ('serviceWorker' in navigator) {
-        loadSteps++;
         navigator.serviceWorker.register('../sw.js')
-            .then(registration => {
-                updateProgress();
-                console.log('ServiceWorker registered');
-            })
             .catch(err => {
                 console.log('ServiceWorker failed:', err);
                 loadingStatus.textContent = "Error: Offline features unavailable";
             });
     }
 
-    loadSteps++;
-    Tone.start().then(() => {
-        updateProgress();
-        loadingStatus.textContent = "Loading samples...";
+    // promise attempt
+    Promise.race([
+        Tone.start(),
+        new Promise(resolve => setTimeout(resolve, 2000)) // audio: max 2s
+    ]).then(() => {
+        loadingStatus.textContent = "Ready!";
+        finishLoading();
     });
-
-    function updateProgress() {
-        const progress = (++loadedSteps / loadSteps) * 100;
-        loadingProgress.style.width = `${Math.min(progress, 100)}%`;
-        
-        if (loadedSteps >= loadSteps) {
-            Promise.all(instruments.map(instrument => {
-                if (instrument instanceof Tone.Sampler) {
-                    return new Promise(resolve => {
-                        instrument.onload = resolve;
-                    });
-                }
-                return Promise.resolve();
-            })).then(() => {
-                loadingStatus.textContent = "Ready!";
-                setTimeout(() => {
-                    loadingScreen.classList.add('loading-hidden');
-                    setTimeout(() => {
-                        loadingScreen.style.display = 'none';
-                    }, 300);
-                }, 500);
-            });
-        }
+    
+    function finishLoading() {
+        clearInterval(progressInterval);
+        loadingProgress.style.width = '100%';
+        setTimeout(() => {
+            loadingScreen.classList.add('loading-hidden');
+            setTimeout(() => {
+                loadingScreen.style.display = 'none';
+            }, 300);
+        }, 500);
     }
+    
+    // fallback timeout in case something hangs
+    setTimeout(finishLoading, 5000); 
+    // (never show loader more than 5 seconds)
 
 
 
