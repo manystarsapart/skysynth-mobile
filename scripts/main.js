@@ -827,7 +827,7 @@ document.addEventListener("DOMContentLoaded", () => {
             pressedKeys.add(key);
             let midiNote = letterMap[key] + transposeValue + octaveAdjustment;
 
-            currentInstrument.triggerAttack(Tone.Frequency(midiNote, "midi"));
+            currentInstrument.triggerAttack(Tone.Frequency(midiNote, "midi"),Tone.context.currentTime);
             document.getElementById(key).style.backgroundColor = "#588157"; // lights up key to green
             incrementCumKeypress();
         } else if (key in pitchMap && !pressedKeys.has(key)) {
