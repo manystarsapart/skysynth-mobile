@@ -41,6 +41,14 @@ FUTURE PLANS
 
 ## [M-0.0.3] - 2025-03-04
 ### Added
+- octave selection (& dynamic updating of SPN display)
+- instrument selection
+- effect selection
+- stop audio when key released toggle
+
+
+## [M-0.0.3] - 2025-03-04
+### Added
 - transposing & dynamic updating of SPN display
 
 

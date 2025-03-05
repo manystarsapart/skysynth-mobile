@@ -40,6 +40,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 loadingScreen.style.display = 'none';
             }, 300);
         }, 500);
+
+
+        if(screen.availHeight > screen.availWidth){
+            alert("Recommended to use Landscape orientation!!");
+            console.log("recommended to use landscape orientation!")
+        }
+        
     }
     
     // fallback timeout in case something hangs
@@ -66,6 +73,9 @@ document.addEventListener("DOMContentLoaded", () => {
             document.documentElement.style.height = window.innerHeight + 'px';
         }
     });
+
+
+
 
 
     // getting from DOM & assigning variables
@@ -263,11 +273,11 @@ document.addEventListener("DOMContentLoaded", () => {
         'A': 9,
         'Bb': 10,
         'B': 11
-    }
+    };
 
     const transposeSelection = document.getElementById("transpose-selection");
     let transposeValue = 0;
-    let transposeNote = "";
+    let transposeNote = "C";
 
     for (const note of transposeList) {
         transposeSelection.appendChild(
@@ -284,6 +294,46 @@ document.addEventListener("DOMContentLoaded", () => {
         updateVisualGuide();
     });
 
+    // ===========================================
+    // OCTAVE
+
+    let octave = 0;
+    let octaveAdjustment = 0;
+
+    const octaveList = [
+        -2,
+        -1,
+        0,
+        1,
+        2,
+        3
+    ];
+
+    const octaveSelection = document.getElementById("octave-selection");
+
+    for (const octave of octaveList) {
+        if (octave == 0) {
+            octaveSelection.appendChild(
+                Object.assign(
+                    document.createElement("option"),
+                    { value: octave, textContent: octave, selected: "selected"}
+                )
+            );
+        } else {
+            octaveSelection.appendChild(
+                Object.assign(
+                    document.createElement("option"),
+                    { value: octave, textContent: octave }
+                )
+            );
+        }
+    }
+
+    octaveSelection.addEventListener('input', (e) => {
+        octave = parseInt(e.target.value);
+        octaveAdjustment = octave * 12;
+        updateVisualGuide();
+    });
 
     // ===========================================
     // MAPS FOR KEY --- MIDINOTE
@@ -302,44 +352,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // TODO: MAKE THIS INTO A DROPDOWN TO SELECT IN MENU INSTEAD
 
-    
-    // ===========================================
-    // OCTAVE CHANGE
-
-    let lastPressedTransposeKey = "`";
-    // ` 1 2 3 4 5 6 7 8 9 0 - =
-    let octave = 0;
-    let octaveAdjustment = 0;
-
-    function octaveUp() {
-        if (octave >= 3) {
-            alert("Already at maximum octave!");
-            return;
-        }
-        octave++;
-        octaveAdjustment += 12;
-        octaveValueBox.innerHTML = octave;
-        alert(`Octave shift updated to: ${octave}`);
-        updateVisualGuide();
-    }
-
-    function octaveDown() {
-        if (octave <= -2) {
-            alert("Already at minimum octave!");  
-            return;
-        }
-        octave--;
-        octaveAdjustment -= 12;
-        octaveValueBox.innerHTML = octave; 
-        alert(`Octave shift updated to: ${octave}`);
-        updateVisualGuide(); 
-    }
-
     // ===========================================
     // FOR VISUAL GUIDE FOR NOTE NAMES
     
-    const notesDivL = document.getElementById("notes-div-left");
-    const notesDivR = document.getElementById("notes-div-right")
 
     let realOctaveLeft = octave + 3;
     let realOctaveRight = realOctaveLeft + 1;
@@ -410,8 +425,8 @@ document.addEventListener("DOMContentLoaded", () => {
         return elements.join('');
     }
 
-    // ^^^ THIS FUNCTION WAS IMPROVED BY DEEPSEEK R1 TO HELP DISPLAY EACH OCTAVES NUMBER CORRECTLY
-    // ALL HAIL OUR AI OVERLORDS
+    const notesDivL = document.getElementById("notes-div-left");
+    const notesDivR = document.getElementById("notes-div-right");
 
     function updateVisualGuide() {
         notesDivL.innerHTML = mapNumbersToNotes(transposeNote, 0);
@@ -600,24 +615,24 @@ document.addEventListener("DOMContentLoaded", () => {
         "Otto - Synth",
     ]
 
-    // // dynamically update select elements
-    // for (var i = 0; i < instrumentNames.length; i++) {
-    //     instrumentSelection.appendChild(
-    //         Object.assign(
-    //             document.createElement("option"),
-    //             { value: i, innerHTML: instrumentNames[i] }
-    //         )
-    //     );
-    // }
+    // dynamically update select elements
+    for (var i = 0; i < instrumentNames.length; i++) {
+        instrumentSelection.appendChild(
+            Object.assign(
+                document.createElement("option"),
+                { value: i, innerHTML: instrumentNames[i] }
+            )
+        );
+    }
 
-    // for (var i = 0; i < effectNodes.length; i++) {
-    //     effectSelection.appendChild(
-    //         Object.assign(
-    //             document.createElement("option"),
-    //             { value: i, innerHTML: effectNodes[i] != null ? effectNodes[i].name : "None" }
-    //         )
-    //     )
-    // }
+    for (var i = 0; i < effectNodes.length; i++) {
+        effectSelection.appendChild(
+            Object.assign(
+                document.createElement("option"),
+                { value: i, innerHTML: effectNodes[i] != null ? effectNodes[i].name : "None" }
+            )
+        )
+    }
   
     // effectNodes[4].dampening = 5000; // or 1000 if you want a rough sound
 
@@ -627,101 +642,101 @@ document.addEventListener("DOMContentLoaded", () => {
     currentInstrument.connect(volumeNode);
     let currentEffectNode = effectNodes[0];
   
-    // // changing EFFECTS
-    // effectSelection.addEventListener("input", (e) => {
-    //     const selectedID = parseInt(e.target.value); 
-    //     getEffectLevelInput(effectNodes[selectedID]); 
-    //     // ^^read from slider BEFORE setting new effect. this ensures we are setting things for the correct node
+    // changing EFFECTS
+    effectSelection.addEventListener("input", (e) => {
+        const selectedID = parseInt(e.target.value); 
+        getEffectLevelInput(effectNodes[selectedID]); 
+        // ^^read from slider BEFORE setting new effect. this ensures we are setting things for the correct node
 
-    //     let newEffectNode = effectNodes[selectedID]; // set new effect 
+        let newEffectNode = effectNodes[selectedID]; // set new effect 
 
-    //     // rewiring to include new effect node
-    //     currentInstrument.disconnect();
-    //     if (currentEffectNode) { // if existing effect is connected, unwire
-    //         currentEffectNode.disconnect(volumeNode);
-    //     }
-    //     currentEffectNode = newEffectNode; 
-    //     if (currentEffectNode) { // rewire to new effect
-    //         currentInstrument.connect(currentEffectNode); // rewire only for
-    //         currentEffectNode.connect(volumeNode);
-    //     } else {
-    //         currentInstrument.connect(volumeNode);
-    //     }
-    // });
+        // rewiring to include new effect node
+        currentInstrument.disconnect();
+        if (currentEffectNode) { // if existing effect is connected, unwire
+            currentEffectNode.disconnect(volumeNode);
+        }
+        currentEffectNode = newEffectNode; 
+        if (currentEffectNode) { // rewire to new effect
+            currentInstrument.connect(currentEffectNode); // rewire only for
+            currentEffectNode.connect(volumeNode);
+        } else {
+            currentInstrument.connect(volumeNode);
+        }
+    });
 
 
-    // // update again to realise new connection
-    // effectSelection.dispatchEvent(new Event('input'));
+    // update again to realise new connection
+    effectSelection.dispatchEvent(new Event('input'));
 
-    // // changing INSTRUMENTS
-    // instrumentSelection.addEventListener("input", (e) => {
-    //     // the actual changing
-    //     currentInstrument = instruments[e.target.value]; 
-    //     // rewiring
-    //     currentInstrument.disconnect();
-    //     if (currentEffectNode) currentInstrument.connect(currentEffectNode);
-    //     else currentInstrument.connect(volumeNode);
-    //     if (currentInstrument == "Sampler" && e.target.value != 1 && e.target.value != 12) {
-    //         // IF SAMPLER && NOT E-GUITAR && NOT OTTO-SYNTH
-    //         stopAudioWhenReleased = false;
-    //         stopAudioWhenReleasedButton.style.backgroundColor = "#F08080";
-    //         stopAudioWhenReleasedButton.textContent = "false"
-    //     } 
-    //     else {
-    //         stopAudioWhenReleased = true;
-    //         stopAudioWhenReleasedButton.style.backgroundColor = "#588157";
-    //         stopAudioWhenReleasedButton.textContent = "true"
-    //     } 
-    // });
+    // changing INSTRUMENTS
+    instrumentSelection.addEventListener("input", (e) => {
+        // the actual changing
+        currentInstrument = instruments[e.target.value]; 
+        // rewiring
+        currentInstrument.disconnect();
+        if (currentEffectNode) currentInstrument.connect(currentEffectNode);
+        else currentInstrument.connect(volumeNode);
+        if (currentInstrument == "Sampler" && e.target.value != 1 && e.target.value != 12) {
+            // IF SAMPLER && NOT E-GUITAR && NOT OTTO-SYNTH
+            stopAudioWhenReleased = false;
+            stopAudioWhenReleasedButton.style.backgroundColor = "#F08080";
+            stopAudioWhenReleasedButton.textContent = "false"
+        } 
+        else {
+            stopAudioWhenReleased = true;
+            stopAudioWhenReleasedButton.style.backgroundColor = "#588157";
+            stopAudioWhenReleasedButton.textContent = "true"
+        } 
+    });
 
-    // stopAudioWhenReleasedButton.addEventListener("click", (e) => {
-    //     if (stopAudioWhenReleased == true) {
-    //         stopAudioWhenReleased = false;
-    //         stopAudioWhenReleasedButton.style.backgroundColor = "#F08080";
-    //         stopAudioWhenReleasedButton.textContent = "false"
-    //     } else {
-    //         stopAudioWhenReleased = true;
-    //         stopAudioWhenReleasedButton.style.backgroundColor = "#588157";
-    //         stopAudioWhenReleasedButton.textContent = "true"
-    //     }
-    // })
+    stopAudioWhenReleasedButton.addEventListener("click", (e) => {
+        if (stopAudioWhenReleased == true) {
+            stopAudioWhenReleased = false;
+            stopAudioWhenReleasedButton.style.backgroundColor = "#F08080";
+            stopAudioWhenReleasedButton.textContent = "false"
+        } else {
+            stopAudioWhenReleased = true;
+            stopAudioWhenReleasedButton.style.backgroundColor = "#588157";
+            stopAudioWhenReleasedButton.textContent = "true"
+        }
+    })
 
-    // effectLevelControl.addEventListener("input", (e) => {effectSelection.dispatchEvent(new Event('input'))});
+    effectLevelControl.addEventListener("input", (e) => {effectSelection.dispatchEvent(new Event('input'))});
 
     // update
-    // instrumentSelection.dispatchEvent(new Event('input'));
+    instrumentSelection.dispatchEvent(new Event('input'));
 
-    // // read from slider
-    // function getEffectLevelInput(node) {
-    //     if (node == null) {
-    //         console.log("No effect.");
-    //         effectLevelControl.style.display = "none";
-    //         return;
-    //     }
+    // read from slider
+    function getEffectLevelInput(node) {
+        if (node == null) {
+            console.log("No effect.");
+            effectLevelControl.style.display = "none";
+            return;
+        }
 
-    //     effectLevel = parseInt(effectLevelControl.value);
+        effectLevel = parseInt(effectLevelControl.value);
 
-    //     effectLevelControl.style.display = "inline-block";
-    //     console.log(node.name);
-    //     switch (node.name) {
-    //         case "Distortion":
-    //             effectNodes[1].distortion = effectLevel / 100;
-    //             // sounds better around mid range
-    //             break;
-    //         case "AutoWah":
-    //             effectNodes[2].sensitivity = effectLevel / 100 * 60 - 60;
-    //             // effect more apparent at higher values
-    //             break;
-    //         case "BitCrusher":
-    //             effectNodes[3].bits = effectLevel / 100 * 15 + 1;
-    //             // sounds better at higher values
-    //             break;
-    //         case "Freeverb":
-    //             effectNodes[4].roomSize = effectLevel / 100;
-    //             // sounds better for me at lower values
-    //             break;
-    //     }
-    // }
+        effectLevelControl.style.display = "inline-block";
+        console.log(node.name);
+        switch (node.name) {
+            case "Distortion":
+                effectNodes[1].distortion = effectLevel / 100;
+                // sounds better around mid range
+                break;
+            case "AutoWah":
+                effectNodes[2].sensitivity = effectLevel / 100 * 60 - 60;
+                // effect more apparent at higher values
+                break;
+            case "BitCrusher":
+                effectNodes[3].bits = effectLevel / 100 * 15 + 1;
+                // sounds better at higher values
+                break;
+            case "Freeverb":
+                effectNodes[4].roomSize = effectLevel / 100;
+                // sounds better for me at lower values
+                break;
+        }
+    }
 
     // ===========================================
     // HANDLING KEYPRESSES
@@ -827,7 +842,12 @@ document.addEventListener("DOMContentLoaded", () => {
     
     refreshKeypressHandlers();
 
+
+    // recommend landscape
     
+
+
+
     // updateVisualGuide(); key: `,1,2,3,4,5,6,7,8,9,0,-,=
     // TODO: MAKE THIS INTO A DROPDOWN
 

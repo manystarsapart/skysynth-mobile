@@ -22,7 +22,6 @@
     <script src="./scripts/main.js" type="module"></script>
     <script src="./scripts/Tone.min.js"></script>
     <!-- ^is this needed after i bundle it? -->
-    <script src="https://kit.fontawesome.com/8e2e927b48.js" crossorigin="anonymous"></script>
 
     <style>
     .unselectable {
@@ -76,7 +75,20 @@
             <div>transpose: 
                 <select name="transpose selection" id="transpose-selection"></select>
             </div>
-
+            <div>octave:
+                <select name="octave selection" id="octave-selection"></select>
+            </div>
+            <div>instrument:
+                <select name="instrument selection" id="instrument-selection"></select>
+            </div>
+            <div>effects:
+                <select name="effect selection" id="effect-selection"></select>
+                <input type="range" id="effect-level-control" min="0" max="100" value="50">  
+            </div>
+            <div>
+                stop audio when key released:
+                <button id="stop-audio-when-released-button">false</button>
+            </div>
         </div>
 
     </div>
