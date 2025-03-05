@@ -44,6 +44,7 @@ FUTURE PLANS
 ### Fixed
 - keyboard mode toggle button not reverting to +12
 - faster loading times!
+- freeverb room size is read-only
 
 
 ## [M-0.0.0] - 2025-03-04
