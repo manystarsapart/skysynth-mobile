@@ -3,7 +3,7 @@
 All notable changes to this project will be documented in this file.
 
 Based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),  
-adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+adheres (mostly) to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
 
@@ -45,6 +45,9 @@ FUTURE PLANS
 ## [M-0.0.6] - 2025-03-05
 ### Added
 - better logging in console regarding user changes
+
+### Changed
+- better menu styling
 
 ### Fixed
 - keyboard mode toggle button not reverting to +12

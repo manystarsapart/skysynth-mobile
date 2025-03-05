@@ -67,43 +67,43 @@
     </div>
 </div>
 
-<button id="menu-button" class="p-2 border-2 border-black bg-white/80 rounded-lg">menu</button>
-<div id="modal-overlay" class="fixed top-0 left-0 w-full h-full bg-gray-800/50 hidden justify-center items-center z-50">
-    <div class="bg-white rounded-lg shadow-lg max-w-lg w-full p-4 relative z-51">
+<button id="menu-button" class="absolute flex-none p-2 border-2 border-black bg-white/80 rounded-lg m-auto left-0 right-0 max-w-[10%]">menu</button>
+<div id="modal-overlay" class="absolute top-0 left-0 w-full h-full bg-gray-800/50 hidden justify-center items-center z-50">
+    <div class="bg-white rounded-lg left-0 right-0 m-auto shadow-lg max-w-lg w-full p-4 relative z-51">
         
-        <button id="close-modal" class="absolute top-2 right-2 text-3xl">×</button>
+        <button id="close-modal" class="absolute top-2 right-2 text-5xl">×</button>
             
         <div id="modal-content" class="overflow-y-auto">
             <h1 class="text-2xl">menu</h1>
             <div>transpose: 
-                <select name="transpose selection" id="transpose-selection"></select>
+                <select name="transpose selection" id="transpose-selection" class="p-1 m-1 border-1 border-black rounded-lg"></select>
             </div>
             <div>octave:
-                <select name="octave selection" id="octave-selection"></select>
+                <select name="octave selection" id="octave-selection" class="p-1 m-1 border-1 border-black rounded-lg"></select>
             </div>
             <div>instrument:
-                <select name="instrument selection" id="instrument-selection"></select>
+                <select name="instrument selection" id="instrument-selection" class="p-1 m-1 border-1 border-black rounded-lg"></select>
             </div>
             <div>effects:
-                <select name="effect selection" id="effect-selection"></select>
+                <select name="effect selection" id="effect-selection" class="p-1 m-1 border-1 border-black rounded-lg"></select>
                 <input type="range" id="effect-level-control" min="0" max="100" value="50">  
             </div>
             <div>
                 stop audio when key released:
-                <button id="stop-audio-when-released-button">false</button>
+                <button id="stop-audio-when-released-button" class="p-1 m-1 border-1 border-black rounded-lg">false</button>
             </div>
             <div>
                 switch keyboard mode:
-                <button id="switch-keyboard-button">+12</button>
+                <button id="switch-keyboard-button" class="p-1 m-1 border-1 border-black rounded-lg">+12</button>
             </div>
         </div>
 
+        <!-- <a href="https://www.skysynth.space" class="absolute top-36 right-2 text-blue-400"><u>test</u></a> -->
+        
     </div>
 </div>
 
 <main id="main-content" class="-z-10 touch-none">
-
-    
     <div class="w-full h-screen flex flex-row justify-center items-center"> <!-- note visual guides-->
         <div id="notes-div-left" class="grid grid-cols-5 gap-2 text-3xl pr-3">
             <div id="q" class="keyboard-key flex flex-col items-center justify-center rounded-3xl border-3 text-center h-20 w-20 min-w-20 bg-white/80">

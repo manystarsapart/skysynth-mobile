@@ -31,6 +31,9 @@ document.addEventListener("DOMContentLoaded", () => {
         loadingStatus.textContent = "ready!";
         finishLoading();
         console.log(performance.now() - loadStartTime);
+        if(screen.availHeight > screen.availWidth){
+            alert("Recommended to use Landscape orientation!!");
+        }
     });
     
     function finishLoading() {
@@ -56,6 +59,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // (never show loader more than 5 seconds)
 
 
+    
 
 
     document.addEventListener('touchstart', (e) => {
