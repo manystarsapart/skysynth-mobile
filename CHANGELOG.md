@@ -10,6 +10,8 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## Table of Contents
 
 <!-- - [Unreleased](#unreleased) -->
+- [M-0.0.5](#m-005---2025-03-05)
+- [M-0.0.4](#m-004---2025-03-05)
 - [M-0.0.3](#m-003---2025-03-04)
 - [M-0.0.2](#m-002---2025-03-04)
 - [M-0.0.1](#m-001---2025-03-04)
@@ -39,7 +41,12 @@ FUTURE PLANS
 
  -->
 
-## [M-0.0.3] - 2025-03-04
+## [M-0.0.5] - 2025-03-05
+### Added
+- keyboard switching from +12 to +1 and back (& dynamic updating of SPN display)
+
+
+## [M-0.0.4] - 2025-03-05
 ### Added
 - octave selection (& dynamic updating of SPN display)
 - instrument selection

@@ -335,22 +335,59 @@ document.addEventListener("DOMContentLoaded", () => {
         updateVisualGuide();
     });
 
+
     // ===========================================
     // MAPS FOR KEY --- MIDINOTE
     
     // for double music pad
-    const dbLetterMap = {
+    const keyboardMode0 = {
         'q': 48, 'w': 50, 'e': 52, 'r': 53, 't': 55,
         'a': 57, 's': 59, 'd': 60, 'f': 62, 'g': 64,
         'z': 65, 'x': 67, 'c': 69, 'v': 71, 'b': 72,
+
         'y': 60, 'u': 62, 'i': 64, 'o': 65, 'p': 67,
         'h': 69, 'j': 71, 'k': 72, 'l': 74, ';': 76,
         'n': 77, 'm': 79, ',': 81, '.': 83, '/': 84,
     };
 
-    // for keys pressed to initiate transposing
+    const keyboardMode1 = {
+        'q': 48, 'w': 50, 'e': 52, 'r': 53, 't': 55,
+        'a': 57, 's': 59, 'd': 60, 'f': 62, 'g': 64,
+        'z': 65, 'x': 67, 'c': 69, 'v': 71, 'b': 72,
 
-    // TODO: MAKE THIS INTO A DROPDOWN TO SELECT IN MENU INSTEAD
+        'y': 49, 'u': 51, 'i': 53, 'o': 54, 'p': 56,
+        'h': 58, 'j': 60, 'k': 61, 'l': 63, ';': 65,
+        'n': 66, 'm': 68, ',': 70, '.': 72, '/': 73,
+    };
+
+    // ===========================================
+    // SWITCH KEYBOARDS
+
+    const switchKeyboardButton = document.getElementById("switch-keyboard-button");
+    
+    let currentKeyboardMode = 0
+    // 0: +12 (default)
+    // 1: +1 (accidentals)
+
+    switchKeyboardButton.addEventListener('touchstart', toggleKeyboardMode);
+
+    function toggleKeyboardMode() {
+        if (currentKeyboardMode == 0) {
+            // current +12, toggle to +1
+            currentKeyboardMode = 1;
+            letterMap = keyboardMode1;
+            switchKeyboardButton.textContent = "+1";
+            updateVisualGuide();
+
+        } else {
+            // current +1, toggle to +12
+            currentKeyboardMode = 0;
+            letterMap = keyboardMode0;
+            switchKeyboardButton.textContent = "+12";
+            updateVisualGuide();
+        }
+    }
+
 
     // ===========================================
     // FOR VISUAL GUIDE FOR NOTE NAMES
@@ -392,37 +429,78 @@ document.addEventListener("DOMContentLoaded", () => {
         [4, 5, 6, 7, 8]
     ];
 
-    function mapNumbersToNotes(currentKey, leftright) {    
-        realOctaveLeft = octave + 2;
-        realOctaveRight = realOctaveLeft + 1;
-        const keyNotes = mapNumbersToNotesOctaves[currentKey];
-        const octaveBase = leftright === 0 ? realOctaveLeft : realOctaveRight;
-        const mappingFlattened = mapNumbersToNotesMapping.flat();
-        let countC = 0;
-        let keyIDcount = 0;
-        const elements = mappingFlattened.map(num => {
-            keyIDcount++;
-            const isC = (num - 1) % 7 === 0;
-            if (isC) countC++;
-            const noteIndex = (num - 1) % 7;
-            const note = keyNotes[noteIndex];
-            const currentOctave = octaveBase + (countC - 1);
-            if (leftright == 0) {
-                return `<div id="${preserveKeyIDLeft[keyIDcount-1]}" class="keyboard-key flex flex-col items-center justify-center rounded-3xl border-3 text-center h-20 w-20 min-w-20 bg-white/80">
+    function mapNumbersToNotes(currentKey, leftright) {  
+        if (currentKeyboardMode = 0) {
+            // +12
+            realOctaveLeft = octave + 2;
+            realOctaveRight = realOctaveLeft + 1;
+            const keyNotes = mapNumbersToNotesOctaves[currentKey];
+            const octaveBase = leftright === 0 ? realOctaveLeft : realOctaveRight;
+            const mappingFlattened = mapNumbersToNotesMapping.flat();
+            let countC = 0;
+            let keyIDcount = 0;
+            const elements = mappingFlattened.map(num => {
+                keyIDcount++;
+                const isC = (num - 1) % 7 === 0;
+                if (isC) countC++;
+                const noteIndex = (num - 1) % 7;
+                const note = keyNotes[noteIndex];
+                const currentOctave = octaveBase + (countC - 1);
+                if (leftright == 0) {
+                    return `<div id="${preserveKeyIDLeft[keyIDcount-1]}" class="keyboard-key flex flex-col items-center justify-center rounded-3xl border-3 text-center h-20 w-20 min-w-20 bg-white/80">
+                        <div>
+                        ${note}<sub class="text-sm">${currentOctave}</sub>
+                        </div>
+                    </div>`;
+                } else {
+                    return `<div id="${preserveKeyIDRight[keyIDcount-1]}" class="keyboard-key flex flex-col items-center justify-center rounded-3xl border-3 text-center h-20 w-20 min-w-20 bg-white/80">
                     <div>
-                    ${note}<sub class="text-sm">${currentOctave}</sub>
+                        ${note}<sub class="text-sm">${currentOctave}</sub>
                     </div>
-                </div>`;
-            } else {
-                return `<div id="${preserveKeyIDRight[keyIDcount-1]}" class="keyboard-key flex flex-col items-center justify-center rounded-3xl border-3 text-center h-20 w-20 min-w-20 bg-white/80">
-                <div>
-                    ${note}<sub class="text-sm">${currentOctave}</sub>
-                </div>
-                </div>`;
-            }
-        });
-        // console.log(elements);
-        return elements.join('');
+                    </div>`;
+                }
+            });
+            // console.log(elements);
+            return elements.join('');
+        } else {
+            // +1
+            realOctaveLeft = octave + 2;
+            realOctaveRight = realOctaveLeft;
+            const keyNotesL = mapNumbersToNotesOctaves[currentKey];
+            const keyNotesR = mapNumbersToNotesOctaves[transposeList[transposeValue+1]];
+            // ^somewhat patchwork solution to get for one semitone up but it works
+            const octaveBase = leftright === 0 ? realOctaveLeft : realOctaveRight;
+            const mappingFlattened = mapNumbersToNotesMapping.flat();
+            let countC = 0;
+            let keyIDcount = 0;
+            const elements = mappingFlattened.map(num => {
+                keyIDcount++;
+                const isC = (num - 1) % 7 === 0;
+                if (isC) countC++;
+                const noteIndex = (num - 1) % 7;
+                const note = leftright === 0 ? keyNotesL[noteIndex] : keyNotesR[noteIndex];
+                const currentOctave = octaveBase + (countC - 1);
+                if (leftright == 0) {
+                    return `<div id="${preserveKeyIDLeft[keyIDcount-1]}" class="keyboard-key flex flex-col items-center justify-center rounded-3xl border-3 text-center h-20 w-20 min-w-20 bg-white/80">
+                    <div>
+                        ${note}<sub class="text-sm">${currentOctave}</sub>
+                        </div>
+                    </div>`;
+                } else {
+                    return `<div id="${preserveKeyIDRight[keyIDcount-1]}" class="keyboard-key flex flex-col items-center justify-center rounded-3xl border-3 text-center h-20 w-20 min-w-20 bg-white/80">
+                    <div>
+                        ${note}<sub class="text-sm">${currentOctave}</sub>
+                    </div>
+                    </div>`;
+                }
+            });
+            // console.log(elements);
+            return elements.join('');
+            
+            
+        } 
+        
+        
     }
 
     const notesDivL = document.getElementById("notes-div-left");
@@ -738,11 +816,14 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+
+
     // ===========================================
     // HANDLING KEYPRESSES
 
+
     // grabs set of KEYS PRESSED
-    let letterMap = dbLetterMap;
+    let letterMap = keyboardMode0;
     // const pressedKeys = new Set();
     
     // when any key is pressed
