@@ -42,11 +42,11 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 500);
 
 
-        if(screen.availHeight > screen.availWidth){
-            alert("Recommended to use Landscape orientation!!");
-            console.log("recommended to use landscape orientation!")
-        }
-        
+        // if(screen.availHeight > screen.availWidth){
+        //     alert("Recommended to use Landscape orientation!!");
+        //     console.log("recommended to use landscape orientation!")
+        // }
+
     }
     
     // fallback timeout in case something hangs
