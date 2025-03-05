@@ -10,6 +10,7 @@ adheres (mostly) to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## Table of Contents
 
 <!-- - [Unreleased](#unreleased) -->
+- [M-0.1.0](#m-010---2025-03-05)
 - [M-0.0.1](#m-001---2025-03-05)
 - [M-0.0.0](#m-000---2025-03-04)
 
@@ -34,6 +35,7 @@ FUTURE PLANS
 ## [M-0.1.0] - 2025-03-05
 ### Changed
 - WONDERFUL NEWS: shaved Tone.js's default delay off by using Tone.context.currentTime in triggerAttack. thank you Specy for the insight
+
 
 ## [M-0.0.1] - 2025-03-05
 ### Added
