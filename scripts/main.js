@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    let loadingHidden = false;
+    const loadStartTime = performance.now();
+
     const loadingScreen = document.getElementById('loading-screen');
     const loadingProgress = document.getElementById('loading-progress');
     const loadingStatus = document.getElementById('loading-status');
@@ -11,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
             progress += 2;
             loadingProgress.style.width = `${progress}%`;
         }
-    }, 100);
+    }, 50);
     
     // register for service worker 
     if ('serviceWorker' in navigator) {
@@ -25,10 +26,11 @@ document.addEventListener("DOMContentLoaded", () => {
     // promise attempt
     Promise.race([
         Tone.start(),
-        new Promise(resolve => setTimeout(resolve, 2000)) // audio: max 2s
+        new Promise(resolve => setTimeout(resolve, 150)) // audio: max 0.2s
     ]).then(() => {
         loadingStatus.textContent = "ready!";
         finishLoading();
+        console.log(performance.now() - loadStartTime);
     });
     
     function finishLoading() {
@@ -91,27 +93,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const clearStatusButton = document.getElementById("clear-status-button");
     const clearNoteHistoryButton = document.getElementById("clear-note-history-button")
     const stopAudioWhenReleasedButton = document.getElementById("stop-audio-when-released-button");
-
-    // ===========================================
-    // MENU TOGGLE
-
-    // const navbar = document.getElementById("navbar");
-    // const menuTitle = document.getElementById("menu-title");
-    // const navContent = navbar.querySelectorAll("li > div");
-    // const acknowledgements = document.getElementById("acknowledgements");
-
-    // function toggleMenu() {
-    //     navbar.classList.toggle("w-[400px]");
-    //     navbar.classList.toggle("hover:w-[400px]");
-    //     menuTitle.classList.toggle("hidden");
-    //     menuTitle.classList.toggle("group-hover:block");
-    //     navContent.forEach(div => {
-    //         div.classList.toggle("hidden");
-    //         div.classList.toggle("group-hover:block");
-    //     });
-    //     acknowledgements.classList.toggle("hidden");
-    //     acknowledgements.classList.toggle("group-hover:block");
-    // }
 
     // ===========================================
     // RECORDING FUNCTIONALITY
@@ -292,6 +273,7 @@ document.addEventListener("DOMContentLoaded", () => {
         transposeValue = transposeValueList[e.target.value];
         transposeNote = transposeList[transposeValue];
         updateVisualGuide();
+        console.log(`transposed. new key: ${transposeNote}`);
     });
 
     // ===========================================
@@ -333,6 +315,7 @@ document.addEventListener("DOMContentLoaded", () => {
         octave = parseInt(e.target.value);
         octaveAdjustment = octave * 12;
         updateVisualGuide();
+        console.log(`octave change. new octave: ${octave}`);
     });
 
 
@@ -372,13 +355,12 @@ document.addEventListener("DOMContentLoaded", () => {
     switchKeyboardButton.addEventListener('touchstart', toggleKeyboardMode);
 
     function toggleKeyboardMode() {
-        if (currentKeyboardMode == 0) {
+        if (currentKeyboardMode === 0) {
             // current +12, toggle to +1
             currentKeyboardMode = 1;
             letterMap = keyboardMode1;
             switchKeyboardButton.textContent = "+1";
             updateVisualGuide();
-
         } else {
             // current +1, toggle to +12
             currentKeyboardMode = 0;
@@ -386,6 +368,7 @@ document.addEventListener("DOMContentLoaded", () => {
             switchKeyboardButton.textContent = "+12";
             updateVisualGuide();
         }
+        console.log(`keyboard mode changed. current mode: ${currentKeyboardMode}`);
     }
 
 
@@ -430,7 +413,7 @@ document.addEventListener("DOMContentLoaded", () => {
     ];
 
     function mapNumbersToNotes(currentKey, leftright) {  
-        if (currentKeyboardMode = 0) {
+        if (currentKeyboardMode === 0) {
             // +12
             realOctaveLeft = octave + 2;
             realOctaveRight = realOctaveLeft + 1;
@@ -740,6 +723,7 @@ document.addEventListener("DOMContentLoaded", () => {
         } else {
             currentInstrument.connect(volumeNode);
         }
+        console.log(`effect change. current effect: ${effectNodes[selectedID]}`);
     });
 
 
@@ -765,6 +749,8 @@ document.addEventListener("DOMContentLoaded", () => {
             stopAudioWhenReleasedButton.style.backgroundColor = "#588157";
             stopAudioWhenReleasedButton.textContent = "true"
         } 
+        console.log(`instrument change. current instrument: ${instrumentNames[e.target.value]}`);
+        console.log(`stopAudioWhenReleased updated with instrument change. current value: ${stopAudioWhenReleased}`);
     });
 
     stopAudioWhenReleasedButton.addEventListener("click", (e) => {
@@ -777,6 +763,7 @@ document.addEventListener("DOMContentLoaded", () => {
             stopAudioWhenReleasedButton.style.backgroundColor = "#588157";
             stopAudioWhenReleasedButton.textContent = "true"
         }
+        console.log(`stopAudioWhenReleased manually toggled. current value: ${stopAudioWhenReleased}`);
     })
 
     effectLevelControl.addEventListener("input", (e) => {effectSelection.dispatchEvent(new Event('input'))});
@@ -795,7 +782,7 @@ document.addEventListener("DOMContentLoaded", () => {
         effectLevel = parseInt(effectLevelControl.value);
 
         effectLevelControl.style.display = "inline-block";
-        console.log(node.name);
+        // console.log(node.name);
         switch (node.name) {
             case "Distortion":
                 effectNodes[1].distortion = effectLevel / 100;
@@ -904,7 +891,7 @@ document.addEventListener("DOMContentLoaded", () => {
             mobileKeyDiv.addEventListener('touchstart', (e) => {
                 e.preventDefault();
                 let midiNote = letterMap[mobileKey] + transposeValue + octaveAdjustment;
-                console.log(`mobile key pressed: ${mobileKey}, ${midiToSPN(midiNote)}`);
+                // console.log(`mobile key pressed: ${mobileKey}, ${midiToSPN(midiNote)}`);
                 currentInstrument.triggerAttack(Tone.Frequency(midiNote, "midi"));
                 mobileKeyDiv.style.backgroundColor = "#588157"; // lights up key to green
     

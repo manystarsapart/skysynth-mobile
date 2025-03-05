@@ -10,6 +10,7 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ## Table of Contents
 
 <!-- - [Unreleased](#unreleased) -->
+- [M-0.0.6](#m-006---2025-03-05)
 - [M-0.0.5](#m-005---2025-03-05)
 - [M-0.0.4](#m-004---2025-03-05)
 - [M-0.0.3](#m-003---2025-03-04)
@@ -40,6 +41,15 @@ FUTURE PLANS
 
 
  -->
+
+## [M-0.0.6] - 2025-03-05
+### Added
+- better logging in console regarding user changes
+
+### Fixed
+- keyboard mode toggle button not reverting to +12
+- faster loading times!
+
 
 ## [M-0.0.5] - 2025-03-05
 ### Added
