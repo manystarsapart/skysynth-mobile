@@ -62,13 +62,13 @@ document.addEventListener("DOMContentLoaded", () => {
     
 
 
-    document.addEventListener('touchstart', (e) => {
+    document.addEventListener('pointerdown', (e) => {
         if (e.target.closest('.keyboard-key')) { 
             e.preventDefault();
         }
     }, { passive: false });
 
-    document.addEventListener('touchend', (e) => {
+    document.addEventListener('pointerup', (e) => {
         if (e.target.closest('.keyboard-key')) {
             e.preventDefault();
         }
@@ -214,8 +214,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const closeModalButton = document.getElementById("close-modal");
     const mainContent = document.getElementById("main-content");
 
-    menuButton.addEventListener('touchstart', () => toggleModal(true));
-    closeModalButton.addEventListener('touchend', () => toggleModal(false));
+    menuButton.addEventListener('pointerdown', () => toggleModal(true));
+    closeModalButton.addEventListener('pointerup', () => toggleModal(false));
 
     function toggleModal(show) {
         if (show) {
@@ -356,7 +356,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // 0: +12 (default)
     // 1: +1 (accidentals)
 
-    switchKeyboardButton.addEventListener('touchstart', toggleKeyboardMode);
+    switchKeyboardButton.addEventListener('pointerdown', toggleKeyboardMode);
 
     function toggleKeyboardMode() {
         if (currentKeyboardMode === 0) {
@@ -892,7 +892,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const mobileKeyDiv = document.getElementById(mobileKey);
             mobileKeyDiv.style.touchAction = 'none';
     
-            mobileKeyDiv.addEventListener('touchstart', (e) => {
+            mobileKeyDiv.addEventListener('pointerdown', (e) => {
                 e.preventDefault();
                 let midiNote = letterMap[mobileKey] + transposeValue + octaveAdjustment;
                 // console.log(`mobile key pressed: ${mobileKey}, ${midiToSPN(midiNote)}`);
@@ -901,7 +901,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
             })
             
-            mobileKeyDiv.addEventListener('touchend', (e) => {
+            mobileKeyDiv.addEventListener('pointerup', (e) => {
                 e.preventDefault();
                 mobileKeyDiv.style.backgroundColor = "";
                 let midiNote = letterMap[mobileKey] + transposeValue + octaveAdjustment
